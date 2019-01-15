@@ -106,8 +106,6 @@ public class Customer {
     // utility function to createAccount savings or current
     void createAcount() {
         in = new Scanner(System.in);
-        System.out.println("enter your name");
-        customerName = System.console().readLine();
         System.out.println("enter the phone no");
         phNo = in.nextInt();
         System.out.println("press1  for savings account or 2 for current account");

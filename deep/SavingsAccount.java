@@ -1,7 +1,6 @@
 import java.util.*;
 
 public class SavingsAccount extends BankAccount {
-    String depositType;
     FixedDeposit fd = null;
     Scanner in;
     private double balance;
@@ -26,6 +25,8 @@ public class SavingsAccount extends BankAccount {
     }
 
     SavingsAccount(double bal, String acc, String password) {
+        System.out.println("enter your name");
+        customerName = System.console().readLine();
         System.out.println("want to  have FD or RD press 1 for FD and 2 for RD");
         in = new Scanner(System.in);
         this.password = password;

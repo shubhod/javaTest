@@ -5,6 +5,8 @@ import java.util.*;
 abstract public class BankAccount {
     String accNo;
     int choice;
+    String depositType;
+    String customerName;
 
     abstract void deposit(double bal);
 

@@ -11,6 +11,8 @@ public class CurrentAccount extends BankAccount {
         accNo = acc;
         balance = bal;
         dateOfOpening = new Date();
+        System.out.println("enter your name");
+        customerName = System.console().readLine();
     }
 
     // overriding showAccDetails
