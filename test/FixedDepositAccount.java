@@ -2,23 +2,22 @@ class FixedDepositAccount extends BankAccount {
     private int tenure;
     int penalty;
     int intrestRate;
-    FixedDepositAccount(int balance, String password, int tenure,String accNo) {
-        super(balance, password);
+    FixedDepositAccount(int balance, String password, int tenure,int accNo) {
+        super(balance,password,accNo);
         this.tenure = tenure;
-        this.accNo=accNo;
     }
 
-   
     public void withdraw(int balance,String password) 
     {
-        if(checkPassword(password))
+        if(getBalance(password)!=null)
         {
-            if (tenure > getDiffrence()) {
+            if (tenure > getDiffrence()) 
+            {
                 penalty = setPenalty(getDiffrence());
                 int newPenalty = ((100 - penalty) * balance) / 100;
                 System.out.println("your  penalty is"+newPenalty);
             }
-            this.balance=this.balance-balance;
+               
         }
         else
             {
@@ -37,7 +36,16 @@ class FixedDepositAccount extends BankAccount {
 
     private void intrestCalculation()
         {
-
+            new Timer().scheduleAtFixedRate(new TimerTask(){
+                @Override
+                public void run(){
+                    int diff=getDiffrence();
+                }
+            },0,60000*60*24);
+                
+                        
         }
+
+    
 
 }

@@ -2,17 +2,20 @@ import java.util.*;
 import java.time.*;
 
 class BankAccount {
-    protected int balance;
-    protected String password;
-    protected String accNo;
-    protected LocalDate dateOfCreation;
-    protected LocalDate DateOfLastTransaction;
+    private int balance;
+    private String password;
+    private int accNo;
+    private LocalDate dateOfCreation;
 
-    BankAccount(int balance, String password) {
+
+    BankAccount(int balance, String password,int accNo) {
         this.balance = balance;
         this.password = password;
+        this.accNo=accNo;
+        dateOfCreation=new LocalDate.now();
     }
-    Boolean checkPassword(String password)
+
+    private Boolean checkPassword(String password)
     {       if(password.equals(this.password))
                     {
                         return true;
@@ -23,8 +26,16 @@ class BankAccount {
 
     public void withdraw(int balance,String password){
         if(checkPassword(password))
-            {
-                this.balance=this.balance-balance;
+            {   
+                if(this.balance>balance)
+                    {
+                        this.balance=this.balance-balance;
+                    }
+                else
+                    {
+                        System.out.println("insufficent funds");
+                    }
+                
             }
         else
             {
@@ -32,11 +43,22 @@ class BankAccount {
             }
     }
 
-    public void getBalance() {
-
-
+    public Integer  getBalance(String password) {
+        if(checkPassword(password))
+            {    
+                Integer balance=new Integer(4);
+                return this.balance;
+            }
+      return null;
+            
     }
-    public String  getAccountNo()
+    public void setBalance()
+        {
+                
+        }
+
+
+    public int  getAccountNo()
         {
                 return accNo;
         }
@@ -55,7 +77,5 @@ class BankAccount {
         LocalDate dateOfCreation = this.dateOfCreation;
         Period period = Period.between(dateOfCreation, today);
         return period.getMonths();
-    }
-
-
+    
 }

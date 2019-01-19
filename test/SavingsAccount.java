@@ -1,18 +1,21 @@
-
+import java.util.*;
 class SavingsAccount extends BankAccount {
-    final private int intrestRate = 3;
-    private int monthlyIntrest;
-
-    SavingsAccount(int balance, String password) {
-        super(balance, password);
+     private int intrestRate = 3;    
+    
+     SavingsAccount(int balance, String password,int accNo) {
+        super(balance, password,accNo);
     }
 
-    void calculateIntrest() {
+   private  void calculateIntrest() {
+    new Timer().scheduleAtFixedRate(new TimerTask(){
+        public void run(){
+           int diffrence=getDiffrence();
+           int balance=getBalance(this.password);
+           int intrest=((100-intrestRate)*balance)/100;
+        }
+    },0,60000*60*24*30);
 
     }
+  
 
-   public  void withdraw() {
-          System.out.println("savings withdraw");
-
-    }
 }
