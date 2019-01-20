@@ -1,21 +1,55 @@
 import java.util.*;
+import java.time.LocalDate;
+
 class SavingsAccount extends BankAccount {
-     private int intrestRate = 3;    
-    
-     SavingsAccount(int balance, String password,int accNo) {
-        super(balance, password,accNo);
+    private int intrestRate = 3;
+    final private int minTransactions = 30;
+    private int noOfTransactions;
+
+    SavingsAccount(double balance, int accNo, String accountType) {
+        super(accNo, accountType);
+        setBalance(balance);
     }
 
-   private  void calculateIntrest() {
-    new Timer().scheduleAtFixedRate(new TimerTask(){
-        public void run(){
-           int diffrence=getDiffrence();
-           int balance=getBalance(this.password);
-           int intrest=((100-intrestRate)*balance)/100;
+    void calculateIntrest() {
+
+    }
+
+    public void withdraw(double balance) {
+        if (minTransactions < noOfTransactions) {
+            super.withdraw(balance);
+        } else {
+            System.out.println("you have crossed your transactional limit");
         }
-    },0,60000*60*24*30);
+    }
+
+    public void deposit(double balance) {
+        if (minTransactions < noOfTransactions) {
+            super.deposit(balance);
+        } else {
+            System.out.println("you have crossed your transactional limit");
+        }
 
     }
-  
+
+    private TimerTask setMinimumTransactions() {
+
+        return new TimerTask() {
+            public void run() {
+                LocalDate date = LocalDate.now();
+                String[] splitDate = date.toString().split("-");
+                if (splitDate[2].equals("01")) {
+                    noOfTransactions = 0;
+                }
+
+            }
+        };
+
+    }
+
+    public void startMinimumTransaction() {
+        Timer timer = new Timer();
+        timer.scheduleAtFixedRate(setMinimumTransactions(), 0, 60000 * 60 * 24);
+    }
 
 }

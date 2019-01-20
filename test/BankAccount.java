@@ -2,74 +2,54 @@ import java.util.*;
 import java.time.*;
 
 class BankAccount {
-    private int balance;
-    private String password;
+    private double balance;
     private int accNo;
     private LocalDate dateOfCreation;
+    private String accountType;
 
-
-    BankAccount(int balance, String password,int accNo) {
-        this.balance = balance;
-        this.password = password;
-        this.accNo=accNo;
-        dateOfCreation=new LocalDate.now();
+    BankAccount(int accNo, String accountType) {
+        this.accNo = accNo;
+        dateOfCreation = LocalDate.now();
+        setAccountType(accountType);
     }
 
-    private Boolean checkPassword(String password)
-    {       if(password.equals(this.password))
-                    {
-                        return true;
-                    }
-             return false;
+    public void deposit(double balance) {
 
+        if (balance > 0) {
+            this.balance = this.balance + balance;
+        } else {
+            System.out.println("invalid balance");
+        }
     }
 
-    public void withdraw(int balance,String password){
-        if(checkPassword(password))
-            {   
-                if(this.balance>balance)
-                    {
-                        this.balance=this.balance-balance;
-                    }
-                else
-                    {
-                        System.out.println("insufficent funds");
-                    }
-                
-            }
-        else
-            {
-                System.out.println("password not matching");
-            }
-    }
-
-    public Integer  getBalance(String password) {
-        if(checkPassword(password))
-            {    
-                Integer balance=new Integer(4);
-                return this.balance;
-            }
-      return null;
-            
-    }
-    public void setBalance()
-        {
-                
+    public void withdraw(double balance) {
+        if (this.balance > balance) {
+            this.balance = this.balance - balance;
+        } else {
+            System.out.println("insufficent funds");
         }
 
-
-    public int  getAccountNo()
-        {
-                return accNo;
-        }
-
-
-    final public void deposit(){
-        this.balance=this.balance-balance;
     }
 
-    public void GetDateOfLastOfTransaction() {
+    public void withdraw() {
 
+    }
+
+    public Double getBalance() {
+        return this.balance;
+    }
+
+    public void setBalance(double balance) {
+        if (balance >= 0) {
+            this.balance = balance;
+        } else {
+            System.out.println("balance less than 0 cannot be assigned");
+        }
+
+    }
+
+    public int getAccountNo() {
+        return accNo;
     }
 
     public int getDiffrence() {
@@ -77,5 +57,20 @@ class BankAccount {
         LocalDate dateOfCreation = this.dateOfCreation;
         Period period = Period.between(dateOfCreation, today);
         return period.getMonths();
-    
+
+    }
+
+    public String getAccountType() {
+        return accountType;
+    }
+
+    private void setAccountType(String accountType) {
+        if (accountType.equals("fixedDeposit") || accountType.equals("currentAccount")
+                || accountType.equals("savingsAccount")) {
+            this.accountType = accountType;
+        } else {
+            System.out.println("wrong setup of accountType");
+        }
+
+    }
 }

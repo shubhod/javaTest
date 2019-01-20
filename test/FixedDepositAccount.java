@@ -1,28 +1,33 @@
+import java.util.*;
+import java.time.LocalDate;
+
 class FixedDepositAccount extends BankAccount {
     private int tenure;
-    int penalty;
-    int intrestRate;
-    FixedDepositAccount(int balance, String password, int tenure,int accNo) {
-        super(balance,password,accNo);
-        this.tenure = tenure;
+    private int penalty;
+    private int intrestRate;
+
+    FixedDepositAccount(int balance, int tenure, int accNo) throws TenureException {
+        super(accNo, "fixedDeposit");
+        setBalance(balance);
+        if (tenure >= 2) {
+            this.tenure = tenure;
+        } else {
+            throw new TenureException();
+        }
+
     }
 
-    public void withdraw(int balance,String password) 
-    {
-        if(getBalance(password)!=null)
-        {
-            if (tenure > getDiffrence()) 
-            {
-                penalty = setPenalty(getDiffrence());
-                int newPenalty = ((100 - penalty) * balance) / 100;
-                System.out.println("your  penalty is"+newPenalty);
-            }
-               
+    public void withdraw() {
+
+        if (tenure > getDiffrence()) {
+            penalty = setPenalty(getDiffrence());
+            double newPenalty = ((100 - penalty) * getBalance()) / 100;
+            System.out.println("your  penalty is" + newPenalty);
+            double finalAmount = getBalance() - newPenalty;
+            System.out.println("you will get" + " " + finalAmount);
+        } else {
+            System.out.println("");
         }
-        else
-            {
-                System.out.println("password not matching");
-            }
     }
 
     private int setPenalty(int diffrence) {
@@ -34,18 +39,18 @@ class FixedDepositAccount extends BankAccount {
 
     }
 
-    private void intrestCalculation()
-        {
-            new Timer().scheduleAtFixedRate(new TimerTask(){
-                @Override
-                public void run(){
-                    int diff=getDiffrence();
-                }
-            },0,60000*60*24);
-                
-                        
-        }
+    public void intrestCalculation() {
+        Timer timer = new Timer();
+        TimerTask timerTask = new TimerTask() {
+            public void run() {
+                double balance = getBalance();
+                double intrest = ((100 - intrestRate) * balance) / 100;
+                balance = intrest + balance;
+                setBalance(balance);
+            };
+        };
+        timer.scheduleAtFixedRate(timerTask, 0, 60000 * 60 * 24 * 30);
 
-    
+    }
 
 }
