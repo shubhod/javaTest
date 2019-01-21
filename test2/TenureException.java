@@ -1,0 +1,3 @@
+class TenureException extends Exception {
+
+}
