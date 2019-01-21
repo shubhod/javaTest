@@ -16,18 +16,22 @@ class SavingsAccount extends BankAccount {
     }
 
     public void withdraw(double balance) {
-        if (minTransactions < noOfTransactions) {
+        if (minTransactions > noOfTransactions) {
             super.withdraw(balance);
         } else {
             System.out.println("you have crossed your transactional limit");
+            System.out.println("nOfTransactions" + " " + noOfTransactions);
+            System.out.println("nOfTransactions" + " " + minTransactions);
         }
     }
 
     public void deposit(double balance) {
-        if (minTransactions < noOfTransactions) {
+        if (minTransactions > noOfTransactions) {
             super.deposit(balance);
         } else {
             System.out.println("you have crossed your transactional limit");
+            System.out.println("nOfTransactions" + " " + noOfTransactions);
+            System.out.println("nOfTransactions" + " " + minTransactions);
         }
 
     }

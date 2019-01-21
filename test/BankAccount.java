@@ -28,6 +28,7 @@ class BankAccount {
         } else {
             System.out.println("insufficent funds");
         }
+        System.out.println("your balance is:" + " " + getBalance());
 
     }
 

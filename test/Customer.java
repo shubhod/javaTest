@@ -83,33 +83,47 @@ class Customer {
     public void createSavingsAccount(int balance, String userId) {
         commonFunction(userId);
         SavingsAccount newSavingsAccount = new SavingsAccount(balance, accNo, "savingsAccount");
+        listOfAccounts.add(newSavingsAccount);
+        accounts.put(userId, listOfAccounts);
         newSavingsAccount.startMinimumTransaction();
+        System.out.println("your accNo is" + accNo);
 
     }
 
     public void withdrawSavingsAccount(String userId, int accNo, double balance) {
         BankAccount bankAccount = getAccount(accNo, userId);
-        if (bankAccount.getAccountType() == "savingsAccount") {
-            bankAccount.withdraw();
+        if (bankAccount != null) {
+            if (bankAccount.getAccountType() == "savingsAccount") {
+                bankAccount.withdraw(balance);
+            } else {
+                System.out.println("wrong account type");
+            }
         } else {
-            System.out.println("wrong account type");
+            System.out.println("bank Account not found");
         }
 
     }
 
     public void depositSavingsAccount(String userId, int accNo, double balance) {
         BankAccount bankAccount = getAccount(accNo, userId);
-        if (bankAccount.getAccountType() == "savingsAccount") {
-            bankAccount.deposit(balance);
+        if (bankAccount != null) {
+            if (bankAccount.getAccountType() == "savingsAccount") {
+                bankAccount.deposit(balance);
+            } else {
+                System.out.println("wrong account type");
+            }
         } else {
-            System.out.println("wrong account type");
+            System.out.println("bank Account not found");
         }
 
     }
 
-    public void createCurrentAccount(String userId) {
+    public void createCurrentAccount(String userId, double balance) {
         commonFunction(userId);
         BankAccount currentAccount = new BankAccount(accNo, "currentAccount");
+        listOfAccounts.add(currentAccount);
+        accounts.put(userId, listOfAccounts);
+        System.out.println("your accNo is" + accNo);
 
     }
 
