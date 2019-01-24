@@ -9,43 +9,29 @@ class Customer {
     private String name;
     private int phoneNumber;
     private static Random rand = new Random();
-    private static int randomNumber = rand.nextInt(453453534);
-    private String userId;
-    private int accNo;
+    private static int accountRandomNumber = rand.nextInt(453453534);
+    int accNo;
     // private static int randomNumberforAccount=rand.nextInt(1111);
-    List<BankAccount> listOfAccounts;
-    Map<String, List<BankAccount>> accounts;
 
+    // access modifiers kept default  for testing purpose
+    List<BankAccount> listOfAccounts;
+    Map<Integer,BankAccount> accounts=null;
     Customer(String name, int phoneNumber) {
-        randomNumber = randomNumber + 1;
-        String StringRandomNumber = Integer.toString(randomNumber);
         this.name = name;
         this.phoneNumber = phoneNumber;
-        accounts = new HashMap<String, List<BankAccount>>();
-        userId = name + StringRandomNumber;
-        System.out.println("your userID is" + " " + userId);
+        //accounts=new HashMap<Integer, BankAccount>();
     }
 
     /**
      * @return the userId
      */
-    public String getUserId() {
-        return userId;
-    }
 
-    private List<BankAccount> getAccountList(String userId) {
-        return accounts.get(userId);
-    }
 
-    private BankAccount getAccount(int accNo, String userId) {
+
+    public BankAccount getAccount(int accNo) {
         BankAccount account = null;
-        List<BankAccount> listOfAccounts = getAccountList(userId);
-        for (int i = 0; i < listOfAccounts.size(); i++) {
-            if (accNo == listOfAccounts.get(i).getAccountNo()) {
-                account = listOfAccounts.get(i);
-            }
+        account=accounts.get(accNo);
 
-        }
         if (account == null) {
             System.out.println("account not matched");
         }
@@ -56,26 +42,25 @@ class Customer {
 /*
     cheking whether prevous accounts are present or nt based on that generating random accunt no
 */
-    public void commonFunction(String userId) {
-        if (getAccountList(userId) != null) {
-            listOfAccounts = getAccountList(userId);
-            accNo = 1 + listOfAccounts.get(listOfAccounts.size() - 1).getAccountNo();
+    private void commonFunction() {
+        if (accounts != null) {
+            accNo = 1 + accNo;
 
         } else {
-            listOfAccounts = new ArrayList<BankAccount>();
-            accNo = rand.nextInt(111134);
+            accNo = accountRandomNumber;
+            accounts = new HashMap<Integer,BankAccount>();
         }
+            System.out.println("accNo:"+" "+accNo);
     }
 /*
   creatng fixed deposit account
 */
-    public void createFixedDepositAccount(int balance, int tenure, String userId) throws TenureException {
-        commonFunction(userId);
+    public void createFixedDepositAccount(int balance, int tenure) throws TenureException {
+        commonFunction();
         try {
             FixedDepositAccount newFixedDepositAccount = new FixedDepositAccount(balance, tenure, accNo);
             newFixedDepositAccount.intrestCalculation();
-            listOfAccounts.add(newFixedDepositAccount);
-            accounts.put(userId, listOfAccounts);
+            accounts.put(accNo,newFixedDepositAccount);
             System.out.println("your accNo is" + accNo);
 
         } catch (TenureException tenureException) {
@@ -86,28 +71,36 @@ class Customer {
     /*
     withdraw from fixed deposit 
 */
-    public void withdrawFixedDepositAccount(int accNo, String userId) {
-        BankAccount bankAccount = getAccount(accNo, userId);
-        if (bankAccount.getAccountType() == "fixedDeposit") {
-            bankAccount.withdraw();
-        } else {
-            System.out.println("wrong account type");
+    public void withdrawFixedDepositAccount(int accNo) {
+
+        BankAccount bankAccount = getAccount(accNo);
+        if(bankAccount!=null)
+        {
+            if (bankAccount.getAccountType() == "fixedDeposit") {
+                bankAccount.withdraw();
+            } else {
+                System.out.println("wrong account type");
+            }
         }
+        else
+        {
+            System.out.println("account number does not exists");
+        }
+
 
     }
 
-    public void createSavingsAccount(int balance, String userId) {
-        commonFunction(userId);
+    public void createSavingsAccount(int balance) {
+        commonFunction();
         SavingsAccount newSavingsAccount = new SavingsAccount(balance, accNo, "savingsAccount");
-        listOfAccounts.add(newSavingsAccount);
-        accounts.put(userId, listOfAccounts);
+        accounts.put(accNo, newSavingsAccount);
         newSavingsAccount.startMinimumTransaction();
         System.out.println("your accNo is" + accNo);
 
     }
 
-    public void withdrawSavingsAccount(String userId, int accNo, double balance) {
-        BankAccount bankAccount = getAccount(accNo, userId);
+    public void withdrawSavingsAccount(int accNo, double balance) {
+        BankAccount bankAccount = getAccount(accNo);
         if (bankAccount != null) {
             if (bankAccount.getAccountType() == "savingsAccount") {
                 bankAccount.withdraw(balance);
@@ -120,8 +113,8 @@ class Customer {
 
     }
 
-    public void depositSavingsAccount(String userId, int accNo, double balance) {
-        BankAccount bankAccount = getAccount(accNo, userId);
+    public void depositSavingsAccount(int accNo, double balance) {
+        BankAccount bankAccount = getAccount(accNo);
         if (bankAccount != null) {
             if (bankAccount.getAccountType() == "savingsAccount") {
                 bankAccount.deposit(balance);
@@ -134,17 +127,16 @@ class Customer {
 
     }
 
-    public void createCurrentAccount(String userId, double balance) {
-        commonFunction(userId);
+    public void createCurrentAccount(double balance) {
+        commonFunction();
         BankAccount currentAccount = new BankAccount(accNo, "currentAccount");
-        listOfAccounts.add(currentAccount);
-        accounts.put(userId, listOfAccounts);
+        accounts.put(accNo,currentAccount);
         System.out.println("your accNo is" + accNo);
 
     }
 
-    public void withdrawCurrentAccount(String userId, int accNo, double balance) {
-        BankAccount bankAccount = getAccount(accNo, userId);
+    public void withdrawCurrentAccount(int accNo, double balance) {
+        BankAccount bankAccount = getAccount(accNo);
         if (bankAccount.getAccountType() == "currentAccount") {
             bankAccount.withdraw(balance);
         } else {
@@ -152,13 +144,18 @@ class Customer {
         }
     }
 
-    public void depositCurrentAccount(String userId, int accNo, double balance) {
-        BankAccount bankAccount = getAccount(accNo, userId);
+    public void depositCurrentAccount(int accNo, double balance) {
+        BankAccount bankAccount = getAccount(accNo);
         if (bankAccount.getAccountType() == "currentAccount") {
             bankAccount.deposit(balance);
         } else {
             System.out.println("wrong account type");
         }
+    }
+    public Double getBalance(int accNo)
+    {   BankAccount bankAccount = getAccount(accNo);
+
+        return bankAccount.getBalance();
     }
 
 }

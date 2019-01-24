@@ -33,7 +33,7 @@ class FixedDepositAccount extends BankAccount {
             double finalAmount = getBalance() - newPenalty;
             System.out.println("you will get" + " " + finalAmount);
         } else {
-            System.out.println("");
+            System.out.println("withdrawn");
         }
     }
 
@@ -58,9 +58,8 @@ class FixedDepositAccount extends BankAccount {
                 setBalance(balance);
             };
         };
-        timer.scheduleAtFixedRate(timerTask, 0, 60000 * 60 * 24 * 30);
+        timer.scheduleAtFixedRate(timerTask,6000,60*60*24*30);
 
     }
-
 
 }

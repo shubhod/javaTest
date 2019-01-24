@@ -1,6 +1,5 @@
 package test2;
 
-import java.util.*;
 import java.time.*;
 
 class BankAccount {
@@ -76,5 +75,8 @@ class BankAccount {
             System.out.println("wrong setup of accountType");
         }
 
+    }
+    private LocalDate getDateOfCreation(){
+        return  dateOfCreation;
     }
 }

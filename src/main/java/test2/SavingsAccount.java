@@ -12,7 +12,6 @@ class SavingsAccount extends BankAccount {
 
     SavingsAccount(double balance, int accNo, String accountType) {
         super(accNo, accountType);
-        this.noOfTransactions=0;
         setBalance(balance);
     }
 
@@ -26,8 +25,7 @@ class SavingsAccount extends BankAccount {
     public void withdraw(double balance) {
         if (minTransactions > noOfTransactions) {
             super.withdraw(balance);
-            System.out.println("balance withdrawn");
-            noOfTransactions=noOfTransactions+1;
+            noOfTransactions++;
         } else {
             System.out.println("you have crossed your transactional limit");
             System.out.println("nOfTransactions" + " " + noOfTransactions);
@@ -41,8 +39,7 @@ class SavingsAccount extends BankAccount {
     public void deposit(double balance) {
         if (minTransactions > noOfTransactions) {
             super.deposit(balance);
-            noOfTransactions=noOfTransactions+1;
-            System.out.println("balance deposited");
+            noOfTransactions++;
         } else {
             System.out.println("you have crossed your transactional limit");
             System.out.println("nOfTransactions" + " " + noOfTransactions);
@@ -58,8 +55,7 @@ class SavingsAccount extends BankAccount {
             public void run() {
                 LocalDate date = LocalDate.now();
                 String[] splitDate = date.toString().split("-");
-                if (splitDate[2].equals("23")) {
-                    System.out.println("hey");
+                if (splitDate[2].equals("01")) {
                     noOfTransactions = 0;
                 }
 
@@ -73,14 +69,7 @@ class SavingsAccount extends BankAccount {
 
     public void startMinimumTransaction() {
         Timer timer = new Timer();
-        timer.scheduleAtFixedRate(setMinimumTransactions(),110, 1111);
-    }
-    public int getMinTransactions()
-    {
-        return minTransactions;
-    }
-    public  int getNoOfTransactions(){
-        return  noOfTransactions;
+        timer.scheduleAtFixedRate(setMinimumTransactions(), 0, 60000 * 60 * 24);
     }
 
 }

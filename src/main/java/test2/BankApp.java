@@ -10,13 +10,16 @@ class BankApp {
     private int balance;
     private String userId;
     private int accNo;
+    private static Random rand = new Random();
+    private static int userIdRandomNumber = rand.nextInt(4534534);
     Scanner sc = new Scanner(System.in);
 /*
  register customer
 */
     String register(String name, int phoneNumber) {
         newCustomer = new Customer(name, phoneNumber);
-        return newCustomer.getUserId();
+        userId=name+Integer.toString(userIdRandomNumber);
+        return userId;
     }
 /*
   asking for balance
@@ -37,7 +40,7 @@ class BankApp {
                 System.out.println("enter the tenure");
                 int tenure = sc.nextInt();
                 try {
-                    newCustomer.createFixedDepositAccount(balance, tenure, newCustomer.getUserId());
+                    newCustomer.createFixedDepositAccount(balance, tenure);
                 } catch (TenureException tenureException) {
                     System.out.println("invalid tenure or balance");
                     createAccount();
@@ -45,10 +48,10 @@ class BankApp {
 
             } else if (choice == 2) {
                 askDetails();
-                newCustomer.createSavingsAccount(balance, newCustomer.getUserId());
+                newCustomer.createSavingsAccount(balance);
             } else if (choice == 3) {
                 askDetails();
-                newCustomer.createCurrentAccount(newCustomer.getUserId(), balance);
+                newCustomer.createCurrentAccount(balance);
             } else {
                 System.out.println("you have given wrong input please please retry");
                 createAccount();
@@ -87,18 +90,18 @@ asking user accNo
             choice = sc.nextInt();
             if (choice == 1) {
                 askUserIdAndAccNo();
-                newCustomer.withdrawFixedDepositAccount(accNo, newCustomer.getUserId());
+                newCustomer.withdrawFixedDepositAccount(accNo);
             } else if (choice == 2) {
                 askUserIdAndAccNo();
                 System.out.println("enter the amount");
                 balance = sc.nextInt();
-                newCustomer.withdrawSavingsAccount(newCustomer.getUserId(), accNo, balance);
+                newCustomer.withdrawSavingsAccount(accNo, balance);
 
             } else if (choice == 3) {
                 askUserIdAndAccNo();
                 System.out.println("enter the amount");
                 balance = sc.nextInt();
-                newCustomer.withdrawCurrentAccount(newCustomer.getUserId(), accNo, balance);
+                newCustomer.withdrawCurrentAccount(accNo, balance);
 
             } else {
                 System.out.println("you have given wrong input please please retry");
@@ -124,13 +127,13 @@ asking user accNo
                 askUserIdAndAccNo();
                 System.out.println("enter the amount");
                 balance = sc.nextInt();
-                newCustomer.depositSavingsAccount(userId, accNo, balance);
+                newCustomer.depositSavingsAccount(accNo, balance);
 
             } else if (choice == 2) {
                 askUserIdAndAccNo();
                 System.out.println("enter the amount");
                 balance = sc.nextInt();
-                newCustomer.depositCurrentAccount(userId, accNo, balance);
+                newCustomer.depositCurrentAccount(accNo, balance);
 
             } else {
                 System.out.println("you have given wrong input please please retry");
@@ -150,7 +153,6 @@ asking user accNo
         Customer customer = null;
         try {
             System.out.println("enter your userId");
-            sc.nextLine();
             String userId =sc.nextLine();
             customer = customerList.get(userId);
             if (customer == null) {
@@ -188,6 +190,7 @@ asking user accNo
                 int phoneNumber = in.nextInt();
                 newBankApp.userId = newBankApp.register(name, phoneNumber);
                 newBankApp.customerList.put(newBankApp.userId, newBankApp.newCustomer);
+                System.out.println(newBankApp.userId);
                 break;
             case 2:
                 Customer customer = newBankApp.getDetails();

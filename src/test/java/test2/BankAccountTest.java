@@ -30,12 +30,12 @@ public class BankAccountTest{
     @org.junit.Test
     public void deposit() {
 
-        BankAccount bankAccount=new BankAccount(3123323,"fixedDeposit");
-        Double oldBalance=bankAccount.getBalance();
-        Double deposit=new Double(balance);
-        bankAccount.deposit(deposit);
-        Double newBalance=bankAccount.getBalance();
-        assertEquals(new Double(deposit+oldBalance),newBalance);
+                BankAccount bankAccount=new BankAccount(3123323,"fixedDeposit");
+                Double oldBalance=bankAccount.getBalance();
+                Double deposit=new Double(balance);
+                bankAccount.deposit(deposit);
+                Double newBalance=bankAccount.getBalance();
+                assertEquals(new Double(deposit+oldBalance),newBalance);
 
     }
     @Parameterized.Parameters
@@ -63,6 +63,12 @@ public class BankAccountTest{
         assertEquals(new Double(400),bankAccount.getBalance());
 
     }
+    @Before
+    @Parameterized.Parameters
+    public static Collection input3()
+    {
+        return Arrays.asList(new Object[]{-400,-400});
+    }
 
     @org.junit.Test
     public void setBalance(){
@@ -73,12 +79,6 @@ public class BankAccountTest{
         Double newBalance=bankAccount.getBalance();
         assertEquals(new Double(balance),newBalance);
     }
-    @Parameterized.Parameters
-    public static Collection input3()
-    {
-        return Arrays.asList(new Object[]{-400,-400});
-    }
-
 
 
 
